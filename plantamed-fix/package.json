@@ -1,6 +1,0 @@
-{
-  "name": "plantamed",
-  "version": "1.0.0",
-  "description": "Diagnóstico inteligente de plantas com IA",
-  "engines": { "node": ">=18.0.0" }
-}
