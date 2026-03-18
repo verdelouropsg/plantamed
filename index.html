@@ -77,28 +77,28 @@ footer { text-align: center; margin-top: 60px; font-size: 0.62rem; color: var(--
       <p class="tagline">Diagnóstico inteligente de plantas</p>
     </div>
   </header>
-
+ 
   <div id="uploadArea">
     <span class="icon">🌿</span>
     <h2>Envie a foto da sua planta</h2>
     <p>Foto clara das folhas, caule ou raízes com sintomas<br>JPG, PNG ou WEBP · até 10 MB</p>
     <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" onchange="handleFile(this)">
   </div>
-
+ 
   <div id="previewArea">
     <img id="previewImg" src="" alt="Planta">
     <button id="removeBtn" onclick="resetAll()">✕ Remover foto</button>
     <button id="analyzeBtn" onclick="analyze()">🔬 Analisar Planta</button>
   </div>
-
+ 
   <div id="loadingArea">
     <div class="spinner"></div>
     <h3>Analisando sua planta…</h3>
     <p id="loadMsg">Identificando sintomas visuais</p>
   </div>
-
+ 
   <div id="errorArea"></div>
-
+ 
   <div id="resultArea">
     <div class="r-header">
       <div class="dot" id="dot"></div>
@@ -108,15 +108,15 @@ footer { text-align: center; margin-top: 60px; font-size: 0.62rem; color: var(--
     <div id="rBody"></div>
     <button id="resetBtn" onclick="resetAll()">↺ Analisar outra planta</button>
   </div>
-
+ 
   <footer>PlantaMed · Diagnóstico por IA · Consulte um agrônomo para casos graves</footer>
 </div>
-
+ 
 <script>
 const API_URL = "/api/diagnose";
 let b64 = null, imgType = null;
 const msgs = ["Identificando sintomas visuais…","Verificando padrões de coloração…","Analisando textura das folhas…","Comparando com base de pragas…","Checando sinais de deficiência hídrica…","Preparando diagnóstico…"];
-
+ 
 function handleFile(input) {
   const file = input.files[0];
   if (!file) return;
@@ -134,7 +134,7 @@ function handleFile(input) {
   };
   reader.readAsDataURL(file);
 }
-
+ 
 async function analyze() {
   if (!b64) { showErr("Nenhuma imagem carregada."); return; }
   document.getElementById("loadingArea").style.display = "block";
@@ -167,7 +167,7 @@ async function analyze() {
     showErr("❌ " + e.message);
   }
 }
-
+ 
 function showResult(r) {
   const dotEl = document.getElementById("dot");
   dotEl.className = "dot";
@@ -187,13 +187,13 @@ function showResult(r) {
     <div class="card"><div class="clabel">Prevenção futura</div><div class="ctext">${r.prevencao||"—"}</div></div>`;
   document.getElementById("resultArea").style.display = "block";
 }
-
+ 
 function showErr(msg) {
   const el = document.getElementById("errorArea");
   el.textContent = msg;
   el.style.display = "block";
 }
-
+ 
 function resetAll() {
   b64=null; imgType=null;
   document.getElementById("fileInput").value="";
@@ -207,3 +207,4 @@ function resetAll() {
 </script>
 </body>
 </html>
+ 
