@@ -1,6 +1,0 @@
-{
-  "rewrites": [
-    { "source": "/api/diagnose", "destination": "/api/diagnose" },
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
-}
