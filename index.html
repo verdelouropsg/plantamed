@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -204,16 +205,19 @@ function loadFile(file) {
 }
 
 async function analyze() {
-  if (!b64) return;
+  if (!b64) { showErr("Nenhuma imagem carregada."); return; }
+  
+  showErr("⏳ Iniciando análise...");
   loading.classList.add("on");
   analyzeBtn.disabled = true;
-  errorBox.classList.remove("on");
   result.classList.remove("on");
 
   let i = 0;
   const t = setInterval(() => { loadMsg.textContent = msgs[(++i) % msgs.length]; }, 2000);
 
   try {
+    showErr("⏳ Chamando " + API_URL);
+    
     const res = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -223,20 +227,27 @@ async function analyze() {
     clearInterval(t);
     loading.classList.remove("on");
 
+    showErr("⏳ Status: " + res.status);
+
+    const text = await res.text();
+    showErr("⏳ Resposta: " + text.substring(0, 200));
+
     if (!res.ok) {
-      const e = await res.json().catch(() => ({}));
-      throw new Error(e.error || `Erro ${res.status}`);
+      let e = {};
+      try { e = JSON.parse(text); } catch {}
+      throw new Error(e.error || `Erro ${res.status}: ${text.substring(0,100)}`);
     }
 
-    const data = await res.json();
+    const data = JSON.parse(text);
     if (data.error) throw new Error(data.error);
+    errorBox.classList.remove("on");
     showResult(data);
 
   } catch (e) {
     clearInterval(t);
     loading.classList.remove("on");
     analyzeBtn.disabled = false;
-    showErr(e.message);
+    showErr("❌ " + e.message);
   }
 }
 
